@@ -66,4 +66,12 @@ class HandTesting
 	 	return false;
 	end
 
+	def self.isFlush(hand)
+		first_suit=hand[0].suit;
+		for j in (1..hand.size-1)
+			return false if hand[j].suit!=first_suit;
+		end
+		return true;
+	end
+
 end

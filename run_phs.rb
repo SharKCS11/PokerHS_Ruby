@@ -24,7 +24,7 @@ $stdout.flush;
 
 num_cards = 7; # number of cards you want to draw.
 
-
+# Testing draw
 npairs=0;
 draw=Array.new;
 (0..51).to_a.shuffle.take(num_cards).each do |n|
@@ -36,8 +36,16 @@ $stdout.flush;
 npairs=HandTesting.countPairs(draw);
 puts "  Number of pairs is #{npairs} \n";
 
+# Testing straights
 puts "Let's test a straight.";
 testHand=DECK[0,4];
 testHand.push(DECK[19]);
 print "  We got "; printHand(testHand,true); $stdout.flush;
 puts "  is it a straight? #{HandTesting.isStraight(testHand).to_s}";
+puts "\n";
+
+# Testing flushes
+puts "Let's test a flush.";
+testHand=DECK[30,5];
+print "  We got "; printHand(testHand,true); $stdout.flush;
+puts "  is it a flush? #{HandTesting.isFlush(testHand).to_s}";
