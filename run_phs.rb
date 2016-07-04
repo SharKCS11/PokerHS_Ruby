@@ -8,14 +8,30 @@ DECK=Array.new;
 	end
 end
 
-puts DECK;
+def printHand(set_of_cards,print_newline)
+	print '[ ';
+	set_of_cards.each do |c|
+		print "#{c} ";
+	end
+	print "]";
+	print "\n" if print_newline;
+	$stdout.flush;
+end
 
-puts "\n\n";
+print "Deck is ";
+printHand(DECK,true); print "\nNow trying randomization:\n";
+$stdout.flush;
 
-card1=Card.new(11,4);
-puts card1;
-puts "Card1 is #{card1.to_longStr}";
-puts "Card1 rank is #{card1.rank} and suit is #{card1.suit}";
-card2=Card.new;
-puts "\n" + card2.to_s;
-puts "Second card rank is #{card2.rank} and suit is #{card2.suit}";
+num_cards = 7; # number of cards you want to draw.
+
+
+npairs=0;
+draw=Array.new;
+(0..51).to_a.shuffle.take(num_cards).each do |n|
+	draw.push(DECK[n]);
+end
+print "You drew: ";
+printHand(draw,true);
+$stdout.flush;
+npairs=HandTesting.countPairs(draw);
+puts "  Number of pairs is #{npairs}";

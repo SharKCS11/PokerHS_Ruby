@@ -41,3 +41,23 @@ class Card
 		return (rkstr+ststr);
 	end
 end
+
+class HandTesting
+	
+	@@primes=[0,0,2,3,5,7,11,13,17,19,23,29,31,37,41]
+
+	def self.countPairs(hand) # hand should contain five cards
+		pairs=0;
+		for i in (0..hand.size-2)
+			for j in (i+1..hand.size-1)
+				pairs+=1 if hand[i].rank==hand[j].rank;
+			end
+		end
+		return pairs;
+	end
+
+	def self.isStraight(hand)
+		
+	end
+
+end
