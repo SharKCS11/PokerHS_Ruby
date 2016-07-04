@@ -43,8 +43,9 @@ class Card
 end
 
 class HandTesting
-	
+	# relates to [2,3,4,5, 6, 7, 8, 9,10, J, Q, K, A]
 	@@primes=[0,0,2,3,5,7,11,13,17,19,23,29,31,37,41]
+	@@straightProducts=[2310,15015,85085,323323,1062347,2800733,6678671,14535931,31367009,8610]
 
 	def self.countPairs(hand) # hand should contain five cards
 		pairs=0;
@@ -57,7 +58,12 @@ class HandTesting
 	end
 
 	def self.isStraight(hand)
-		
+		prime_conversion_product=1;
+		hand.each do |c|
+			prime_conversion_product*=@@primes[c.rank];
+		end
+		return true if @@straightProducts.include?(prime_conversion_product)
+	 	return false;
 	end
 
 end

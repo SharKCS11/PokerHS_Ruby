@@ -34,4 +34,10 @@ print "You drew: ";
 printHand(draw,true);
 $stdout.flush;
 npairs=HandTesting.countPairs(draw);
-puts "  Number of pairs is #{npairs}";
+puts "  Number of pairs is #{npairs} \n";
+
+puts "Let's test a straight.";
+testHand=DECK[0,4];
+testHand.push(DECK[19]);
+print "  We got "; printHand(testHand,true); $stdout.flush;
+puts "  is it a straight? #{HandTesting.isStraight(testHand).to_s}";
