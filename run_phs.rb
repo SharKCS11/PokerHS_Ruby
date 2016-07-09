@@ -9,7 +9,7 @@ DECK=Array.new;
 end
 
 
-num_cards = 7; # number of cards you want to draw.
+num_cards = 21; # number of cards you want to draw.
 
 # Testing draw
 final_hand_strength=-1;
