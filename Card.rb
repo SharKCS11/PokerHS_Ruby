@@ -42,6 +42,8 @@ class Card
 		if x!=6 and x!=1
 			pluralRank=@@longRankStr[x-2];
 			pluralRank += 's';
+		elsif x==6
+			pluralRank = "Sixes";
 		end
 		return pluralRank;
 	end
