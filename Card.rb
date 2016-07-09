@@ -43,6 +43,7 @@ class Card
 			pluralRank=@@longRankStr[x-2];
 			pluralRank += 's';
 		end
+		return pluralRank;
 	end
 
 	def <=>(other)
@@ -172,7 +173,7 @@ def printHand(set_of_cards,print_newline)
 end
 
 class MaxFinder # used to find the best 5 cards from a draw
-	attr_reader :allhands,:hand_info_string
+	attr_reader :allhands,:hand_info_string, :best_strength
 
 	def initialize(draw)
 		draw.sort! {|x,y| x<=>y};
@@ -265,17 +266,49 @@ class MaxFinder # used to find the best 5 cards from a draw
 		end
 	end
 
-	def getMaxHand
-		curMaxIdx=-1;
-		curMaxStrength=-1
-		curMaxHeight=[0,0];
-		for j in (0..allhands.size-1)
-			combStrength=HandTesting.getStrength(allhands[j]);
-			if combStrength > curMaxStrength
-				curMaxIdx=j;
-				curMaxStrength=combStrength;
-				curMaxHeight=getHandHeight(allhands[j],combStrength);
-			end
+	def createInfoString(hand)
+		strength=HandTesting.getStrength(hand);
+		@best_strength=strength;
+		height=MaxFinder.getHandHeight(hand,strength);
+		if strength==0 # high card
+			@hand_info_string = Card.longRankStr[height-2] + " High";
+		elsif strength==1 # pair
+			@hand_info_string = "Pair of " + Card.plur_s(height);
+		elsif strength==2 # two-pair
+			@hand_info_string = "Two-Pair: " + Card.plur_s(height[0]) + " and " + Card.plur_s(height[1]);
+		elsif strength==3 # Triple
+			@hand_info_string = "Three of a Kind: Trip " + Card.plur_s(height);
+		elsif strength==4 # Straight
+			@hand_info_string = "Straight: " + Card.longRankStr[height-2] + " High";
+		elsif strength==5 # Flush
+			@hand_info_string = "Flush: " + Card.longRankStr[height-2] + " High";
+		elsif strength==6 # Full House
+			@hand_info_string = "Full House: " + Card.plur_s(height[0]) + " over " + Card.plur_s(height[1]);
+		elsif strength==7 # Quadruple
+			@hand_info_string = "Four of a Kind: Quad " + Card.plur_s(height);
+		elsif strength==8 # Straight Flush
+			@hand_info_string = "Straight Flush: " + Card.longRankStr[height-2] + " High";
 		end
+	end
+
+	def getMaxHand()
+		curMaxIdx=0;
+		for j in (0..@allhands.size-1)
+			curMaxIdx = j if HandTesting.hand_less(@allhands[curMaxIdx],@allhands[j]) # max is less than new
+		end
+		besthand=@allhands[curMaxIdx];
+		createInfoString(besthand);
+		print "  Best hand is ";
+		k=0;
+		loop do
+			print besthand[k]
+			break if(k>=besthand.size-1)
+			k+=1;
+			print ", ";
+		end
+		print "\n";
+		$stdout.flush;
+		puts @hand_info_string;
+		return best_strength;
 	end
 end

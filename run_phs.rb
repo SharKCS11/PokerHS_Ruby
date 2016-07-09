@@ -23,16 +23,13 @@ draw=Array.new;
 end
 print "You drew: ";
 printHand(draw,true);
-npairs=HandTesting.countPairs(draw);
-puts "  Number of pairs is #{npairs} \n";
+#testHand=[Card.new(3,3),Card.new(5,3),Card.new(12,3),Card.new(11,3),Card.new(10,2),Card.new(13,3),Card.new(6,3)]
+maxim=MaxFinder.new(draw); 
+maxim.getMaxHand();
 
-print "Sorting by rank, we have\n  ";
-draw.sort! {|x,y| x<=>y};
-printHand(draw,true);
-maxim=MaxFinder.new(draw);
-maxim.printState;
-puts "\n"; 
 
+
+=begin #Testing hand_less
 puts "Let's test hand heights now.";
 testHand1=[Card.new(13,1),Card.new(13,2),Card.new(2,4),Card.new(2,1),Card.new(2,3)];
 testHand2=[Card.new(5,1),Card.new(5,2),Card.new(8,4),Card.new(5,3),Card.new(8,1)];
@@ -41,7 +38,7 @@ testHand2.sort! {|x,y| x<=>y};
 print "  Testing with ";
 printHand(testHand1,false); print "   "; printHand(testHand2,true);
 puts "  Testing the less function #{HandTesting.hand_less(testHand2,testHand1)}";
-
+=end
 
 =begin #Testing ranks
 print "Let's test the hand for strengths: ";
