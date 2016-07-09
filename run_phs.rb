@@ -9,10 +9,6 @@ DECK=Array.new;
 end
 
 
-print "Deck is ";
-printHand(DECK,true); print "\nNow trying randomization:\n";
-$stdout.flush;
-
 num_cards = 7; # number of cards you want to draw.
 
 # Testing draw
@@ -23,8 +19,9 @@ draw=Array.new;
 end
 print "You drew: ";
 printHand(draw,true);
-#testHand=[Card.new(3,3),Card.new(5,3),Card.new(12,3),Card.new(11,3),Card.new(10,2),Card.new(13,3),Card.new(6,3)]
-maxim=MaxFinder.new(draw); 
+#testHand=[Card.new(3,3),Card.new(7,1),Card.new(7,3),Card.new(8,2),Card.new(8,4),Card.new(8,1),Card.new(6,3)];
+#print "Testing with "; printHand(testHand,true);
+maxim=MaxFinder.new(testHand); 
 maxim.getMaxHand();
 
 

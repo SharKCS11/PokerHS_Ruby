@@ -245,7 +245,7 @@ class MaxFinder # used to find the best 5 cards from a draw
 				j+=1;
 			end
 			triple=hand[j].rank;
-			j=1;
+			j=0;
 			double=0;
 			num_matches=0;
 			loop do
