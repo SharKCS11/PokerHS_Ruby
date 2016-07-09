@@ -1,4 +1,4 @@
-# PokerHS_Ruby
+# Poker Hand Simulator: Ruby Rewrite
 A clone of the original Poker Hand Simulator, rewritten in Ruby. A GUI is soon to-be-made using RubyFX or Shoes!
 
 In a poker game, how many times on average do you need to draw a hand of cards before you finally got a straight flush? Essentially,
