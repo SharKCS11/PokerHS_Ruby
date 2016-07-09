@@ -33,6 +33,14 @@ maxim=MaxFinder.new(draw);
 maxim.printState;
 puts "\n"; 
 
+puts "Let's test hand heights now.";
+testHand1=[Card.new(13,1),Card.new(13,2),Card.new(2,4),Card.new(2,1),Card.new(2,3)];
+testHand2=[Card.new(5,1),Card.new(5,2),Card.new(8,4),Card.new(5,3),Card.new(8,1)];
+testHand1.sort! {|x,y| x<=>y};
+testHand2.sort! {|x,y| x<=>y};
+print "  Testing with ";
+printHand(testHand1,false); print "   "; printHand(testHand2,true);
+puts "  Testing the less function #{HandTesting.hand_less(testHand2,testHand1)}";
 
 
 =begin #Testing ranks

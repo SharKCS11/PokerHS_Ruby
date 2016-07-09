@@ -114,6 +114,50 @@ class HandTesting
 			return pairs;
 		end
 	end
+
+	def self.sumRanks(hand)
+		sum=0;
+		hand.each do |cd|
+			sum += cd.rank;
+		end
+		return sum;
+	end
+
+	def self.hand_less(lhs,rhs)
+		lhs_str=self.getStrength(lhs);
+		rhs_str=self.getStrength(rhs);
+		if(lhs_str < rhs_str)
+			return true;
+		elsif(lhs_str > rhs_str)
+			return false;
+		end
+		#code will continue if the strengths are equal
+		if(lhs_str==0 || lhs_str==1 || lhs_str==3 || lhs_str==4 \
+			|| lhs_str==5 || lhs_str==7 || lhs_str==8)
+			lhs_height=MaxFinder.getHandHeight(lhs,lhs_str);
+			rhs_height=MaxFinder.getHandHeight(rhs,rhs_str);
+			if lhs_height<rhs_height
+				return true;
+			elsif lhs_height > rhs_height
+				return false;
+			end
+		elsif(lhs_str==2 or lhs_str==6) #two-pair or full house
+			lhs_height=MaxFinder.getHandHeight(lhs,lhs_str);
+			rhs_height=MaxFinder.getHandHeight(rhs,rhs_str);
+			if lhs_height[0]<rhs_height[0]
+				return true;
+			elsif lhs_height[0]>rhs_height[0]
+				return false;
+			elsif lhs_height[1]<rhs_height[1]
+				return true;
+			elsif lhs_height[1]>rhs_height[1]
+				return false;
+			end
+		end
+		#Both strengths and heights are equal: now we want kickers.
+		return (self.sumRanks(lhs) < self.sumRanks(rhs));
+	end
+
 end
 
 #Hand printing function
@@ -144,13 +188,94 @@ class MaxFinder # used to find the best 5 cards from a draw
 		end
 	end
 
-	def findIndepKicker(hand) #hand must be of five cards in SORTED order.
-		return hand[4];
+	def self.findIndepKicker(hand) #hand must be of five cards in SORTED order.
+		return hand[4].rank;
+	end
+
+	def self.countNextMatches(hand,idx)
+		hits=0;
+		key=hand[idx].rank;
+		for j in (idx+1..hand.size-1)
+			hits+=1 if hand[j].rank==key;
+		end
+		return hits;
+	end
+
+	def self.getHandHeight(hand,strength)
+		if ([0,4,5,8].include?(strength)) # high-cards, straights, flushes
+			return findIndepKicker(hand);
+		elsif strength==1 # pair
+			j=0;
+			until (countNextMatches(hand,j) > 0)
+				j+=1;
+			end
+			return hand[j].rank;
+		elsif strength==2 # two pair
+			j=0;
+			until (countNextMatches(hand,j) > 0)
+				j+=1;
+			end
+			first_pair=hand[j].rank;
+			j=1;
+			second_pair=0;
+			num_matches=0;
+			loop do
+				num_matches=countNextMatches(hand,j) if(hand[j].rank!=first_pair);
+				if num_matches>0
+					second_pair=hand[j].rank;
+					break;
+				end
+				j+=1;
+			end
+			if first_pair >= second_pair
+				return [first_pair,second_pair];
+			else
+				return [second_pair,first_pair];
+			end
+		elsif strength==3 # trips
+			j=0;
+			until (countNextMatches(hand,j) > 0)
+				j+=1;
+			end
+			return hand[j].rank
+		elsif strength==6 # full house
+			j=0;
+			until (countNextMatches(hand,j) == 2)
+				j+=1;
+			end
+			triple=hand[j].rank;
+			j=1;
+			double=0;
+			num_matches=0;
+			loop do
+				num_matches=countNextMatches(hand,j) if(hand[j].rank!=triple);
+				if num_matches>0
+					double=hand[j].rank;
+					break;
+				end
+				j+=1;
+			end
+			return [triple,double];
+		elsif strength==7 # quads
+			j=0;
+			until (countNextMatches(hand,j) > 0)
+				j+=1;
+			end
+			return hand[j].rank;
+		end
 	end
 
 	def getMaxHand
-		curMaxIdx=0;
-
+		curMaxIdx=-1;
+		curMaxStrength=-1
+		curMaxHeight=[0,0];
+		for j in (0..allhands.size-1)
+			combStrength=HandTesting.getStrength(allhands[j]);
+			if combStrength > curMaxStrength
+				curMaxIdx=j;
+				curMaxStrength=combStrength;
+				curMaxHeight=getHandHeight(allhands[j],combStrength);
+			end
+		end
 	end
-
 end
